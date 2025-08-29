@@ -1,2 +1,2 @@
-# InboxViewKit-Android
-InboxViewKit, Inbox view, Android, Kotlin
+# InboxKit-Android
+InboxKit, Inbox view, Android, Kotlin
