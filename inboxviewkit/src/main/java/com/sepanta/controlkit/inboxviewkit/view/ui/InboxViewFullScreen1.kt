@@ -31,11 +31,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -80,7 +78,7 @@ class InboxViewFullScreen1 : InboxContract {
         val items by viewModel.dataList.collectAsState()
         val openDialog = viewModel.openDialog.collectAsState()
         ShowDetailView(config, viewModel)
-        if (openDialog.value) return
+        if (!openDialog.value) return
         Dialog(
             onDismissRequest = { viewModel.dismissDialog() },
             properties = DialogProperties(
@@ -304,8 +302,7 @@ class InboxViewFullScreen1 : InboxContract {
         val sizeDime = LocalSizeDimensions.current
         val marginDim = LocalMarginDimensions.current
         val onClickAction: () -> Unit = {
-            viewModel.setShowDetailPage(true)
-            viewModel.setCurrentIndex(index)
+            viewModel.submitDialog(index)
         }
 
         config.inboxItemView?.let { view ->

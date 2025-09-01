@@ -1,0 +1,59 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      upload_html:
+        description: "Upload JaCoCo HTML artifact?"
+        required: false
+        default: "false"
+
+jobs:
+  build:
+    name: Build & Test (InboxViewKit)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper/
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
+
+      - name: Run tests (InboxViewKit)
+        run: ./gradlew :inboxviewkit:clean :inboxviewkit:testDebugUnitTest --stacktrace
+
+      - name: Generate JaCoCo report
+        run: ./gradlew :inboxviewkit:jacocoTestReport
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: inboxviewkit/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+          flags: inboxviewkit
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload JaCoCo HTML report (optional)
+        if: github.event.inputs.upload_html == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: inboxviewkit-jacoco-report
+          path: inboxviewkit/build/reports/jacoco/jacocoTestReport/html

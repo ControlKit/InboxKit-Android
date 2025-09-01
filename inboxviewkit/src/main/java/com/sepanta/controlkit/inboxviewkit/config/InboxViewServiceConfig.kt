@@ -1,4 +1,4 @@
-package com.inboxview.config
+package com.sepanta.controlkit.inboxviewkit.config
 
 import com.inboxview.view.config.InboxViewConfig
 
@@ -12,6 +12,4 @@ data class InboxViewServiceConfig(
     var deviceId: String="1",
     var timeOut: Long = 2000L,
     var timeRetryThreadSleep: Long = 2000L,
-    var maxRetry: Int = 3,
-
-    )
+    var maxRetry: Int = 3)

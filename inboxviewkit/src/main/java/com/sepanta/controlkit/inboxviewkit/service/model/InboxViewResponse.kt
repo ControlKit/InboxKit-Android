@@ -13,7 +13,5 @@ InboxViewResponse(
     val maximumVersion: String?=null,
     val created_at: String?=null,
     val time: String?=null,
-    val date: String?=null,
-
-
+    val date: String?=null
 )

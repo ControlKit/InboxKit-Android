@@ -1,12 +1,10 @@
 package com.sepanta.controlkit.inboxviewkit
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.inboxview.config.InboxViewServiceConfig
+import com.sepanta.controlkit.inboxviewkit.config.InboxViewServiceConfig
 import com.inboxview.view.config.InboxViewStyle
 import com.sepanta.controlkit.inboxviewkit.service.ApiService
 import com.sepanta.controlkit.inboxviewkit.service.InboxViewApi
@@ -56,13 +54,12 @@ class InboxViewKit(
             is InboxViewState.ShowData -> {
                     InboxViewStyle.checkViewStyle(config.viewConfig.viewStyle)
                         .ShowView(config = config.viewConfig, viewModel)
+                viewModel.showDialog()
 
 
             }
 
             is InboxViewState.Error -> {
-                Log.i("Success222", "viewModelScope ${state.data}    ")
-
                 onState?.invoke(InboxViewState.Error(state.data))
 
 

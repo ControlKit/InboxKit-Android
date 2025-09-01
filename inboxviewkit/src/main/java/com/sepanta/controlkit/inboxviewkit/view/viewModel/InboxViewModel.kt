@@ -2,7 +2,7 @@ package com.sepanta.controlkit.inboxviewkit.view.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.inboxview.config.InboxViewServiceConfig
+import com.sepanta.controlkit.inboxviewkit.config.InboxViewServiceConfig
 import com.sepanta.controlkit.inboxviewkit.service.model.InboxViewResponse
 import com.sepanta.controlkit.inboxviewkit.service.model.toDomainList
 import com.sepanta.controlkit.inboxviewkit.service.InboxViewApi
@@ -50,6 +50,7 @@ class InboxViewModel(
 
     fun setShowDetailPage(boolean: Boolean) {
         _showDetailPage.value = boolean
+
     }
 
     private fun setButtonsState(index: Int) {
@@ -58,6 +59,7 @@ class InboxViewModel(
     }
 
     fun setCurrentIndex(index: Int) {
+        if (_dataList.value.isEmpty()) return
         _currentIndex.value = index
         _currentModel.value = dataList.value[index]
         setButtonsState(index)
@@ -90,17 +92,16 @@ class InboxViewModel(
 
             when (data) {
                 is NetworkResult.Success -> {
-
-                    if (data.value != null) {
-                        _dataList.value = data.value.toDomainList()
-                        _dataList.value = _dataList.value+data.value.toDomainList()
-                        _dataList.value = _dataList.value+data.value.toDomainList()
-                        _mutableState.value = InboxViewState.ShowData
-
-                    } else {
+                    val result = data.value?.data
+                    if (result.isNullOrEmpty()) {
                         _mutableState.value = InboxViewState.NoData
-
+                        _dataList.value = emptyList()
+                    } else {
+                        _mutableState.value = InboxViewState.ShowData
+                        _dataList.value = data.value.toDomainList()
                     }
+
+
                 }
 
                 is NetworkResult.Error -> {
@@ -115,12 +116,18 @@ class InboxViewModel(
     private val _openDialog = MutableStateFlow(true)
     val openDialog: StateFlow<Boolean> = _openDialog.asStateFlow()
 
-    fun submitDialog() {
-        _openDialog.value = false
-        clearState()
+    fun showDialog() {
+        _openDialog.value = true
+    }
+    fun submitDialog(index: Int) {
+        if (_dataList.value.isNotEmpty() && index in _dataList.value.indices) {
+            setShowDetailPage(true)
+            setCurrentIndex(index)
+        }
     }
 
     fun dismissDialog() {
+        setShowDetailPage(false)
         _openDialog.value = false
         triggerLaunchAlert()
         clearState()
