@@ -1,10 +1,9 @@
 # InboxKit-Android 📬
 
-[![Version](https://img.shields.io/badge/version-0.0.1-blue.svg)](https://github.com/ControlKit/InboxKit-Android)
+[![JitPack](https://jitpack.io/v/ControlKit/InboxKit-Android.svg)](https://jitpack.io/#ControlKit/InboxKit-Android)
 [![API](https://img.shields.io/badge/API-26%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=26)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.20-blue.svg)](https://kotlinlang.org/)
-[![JitPack](https://jitpack.io/v/ControlKit/InboxKit-Android.svg)](https://jitpack.io/#ControlKit/InboxKit-Android)
 
 A powerful and customizable Android library for displaying inbox-style notifications and messages using Jetpack Compose. InboxKit provides a modern, flexible solution for managing user notifications with beautiful UI components and extensive customization options.
 
