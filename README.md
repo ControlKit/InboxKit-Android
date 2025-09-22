@@ -281,25 +281,6 @@ val inboxViewKit = inboxViewKitHost(
 )
 ```
 
-### API Configuration
-
-Create a `local.properties` file in your project root:
-
-```properties
-API_URL=https://your-api-endpoint.com/api/inbox
-```
-
-Or configure programmatically:
-
-```kotlin
-val serviceConfig = InboxViewServiceConfig(
-    appId = "your-app-id",
-    version = "1.0.0",
-    // API URL will be read from local.properties
-    // or use default: https://example.com/api/inbox-view
-)
-```
-
 ## 📊 Data Model
 
 ### InboxViewResponse
