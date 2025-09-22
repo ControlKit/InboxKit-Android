@@ -8,6 +8,7 @@ package com.sepanta.controlkit.inboxviewkit.view.viewmodel
 import com.sepanta.controlkit.inboxviewkit.config.InboxViewServiceConfig
 import com.sepanta.controlkit.inboxviewkit.service.ApiService
 import com.sepanta.controlkit.inboxviewkit.service.InboxViewApi
+import com.sepanta.controlkit.inboxviewkit.service.model.ActionResponse
 import com.sepanta.controlkit.inboxviewkit.service.model.ApiCheckUpdateResponse
 import com.sepanta.controlkit.inboxviewkit.service.model.ApiData
 import com.sepanta.controlkit.inboxviewkit.view.viewModel.InboxViewModel
@@ -33,6 +34,17 @@ class FakeApiServiceSuccess(val body: ApiCheckUpdateResponse?) : ApiService {
     ): Response<ApiCheckUpdateResponse> {
         return if (body != null) Response.success(body) else Response.success(null)
     }
+
+    override suspend fun setAction(
+        url: String,
+        appId: String?,
+        version: String,
+        sdkVersion: String,
+        deviceId: String?,
+        action: String,
+    ): Response<ActionResponse> {
+        TODO("Not yet implemented")
+    }
 }
 
 class FakeApiServiceHttpError : ApiService {
@@ -40,10 +52,33 @@ class FakeApiServiceHttpError : ApiService {
         val body = """{"message":"Server error"}""".toResponseBody("application/json".toMediaTypeOrNull())
         return Response.error(500, body)
     }
+
+    override suspend fun setAction(
+        url: String,
+        appId: String?,
+        version: String,
+        sdkVersion: String,
+        deviceId: String?,
+        action: String,
+    ): Response<ActionResponse> {
+        val body = """{"message":"Server error"}""".toResponseBody("application/json".toMediaTypeOrNull())
+        return Response.error(500, body)
+    }
 }
 
 class FakeApiServiceThrows : ApiService {
     override suspend fun getData(url: String, appId: String?, version: String, deviceId: String?): Response<ApiCheckUpdateResponse> {
+        throw IOException("network down")
+    }
+
+    override suspend fun setAction(
+        url: String,
+        appId: String?,
+        version: String,
+        sdkVersion: String,
+        deviceId: String?,
+        action: String,
+    ): Response<ActionResponse> {
         throw IOException("network down")
     }
 }

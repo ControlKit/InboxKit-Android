@@ -1,6 +1,6 @@
 package com.inboxview.view.config
 
-import com.inboxview.view.ui.InboxViewFullScreen1
+import com.sepanta.controlkit.inboxviewkit.view.ui.InboxViewFullScreen1
 
 
 enum class InboxViewStyle {

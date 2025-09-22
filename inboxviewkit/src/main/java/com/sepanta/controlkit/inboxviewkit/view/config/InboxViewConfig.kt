@@ -1,4 +1,4 @@
-package com.inboxview.view.config
+package com.sepanta.controlkit.inboxviewkit.view.config
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.TextFieldColors
@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
+import com.inboxview.view.config.InboxViewStyle
 import com.sepanta.controlkit.inboxviewkit.utils.FontSizeRange
 import com.sepanta.controlkit.inboxviewkit.view.ui.model.DetailPageItemModel
 import com.sepanta.controlkit.inboxviewkit.view.ui.model.InboxItemModel

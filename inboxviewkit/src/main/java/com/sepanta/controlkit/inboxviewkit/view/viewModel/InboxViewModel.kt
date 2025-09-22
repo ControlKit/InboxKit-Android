@@ -1,12 +1,15 @@
 package com.sepanta.controlkit.inboxviewkit.view.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sepanta.controlkit.inboxviewkit.BuildConfig
 import com.sepanta.controlkit.inboxviewkit.config.InboxViewServiceConfig
 import com.sepanta.controlkit.inboxviewkit.service.model.InboxViewResponse
 import com.sepanta.controlkit.inboxviewkit.service.model.toDomainList
 import com.sepanta.controlkit.inboxviewkit.service.InboxViewApi
 import com.sepanta.controlkit.inboxviewkit.service.apiError.NetworkResult
+import com.sepanta.controlkit.inboxviewkit.service.local.LocalDataSource
 import com.sepanta.controlkit.inboxviewkit.view.viewModel.state.InboxViewState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,16 +20,19 @@ import kotlinx.coroutines.launch
 
 class InboxViewModel(
     private val api: InboxViewApi,
-) : ViewModel() {
+    private val localDataSource: LocalDataSource,
+
+    ) : ViewModel() {
     private val _dataList = MutableStateFlow<List<InboxViewResponse>>(emptyList())
     val dataList: StateFlow<List<InboxViewResponse>> = _dataList
 
+    private val url = BuildConfig.API_URL
 
     private var config: InboxViewServiceConfig? = null
     fun setConfig(config: InboxViewServiceConfig) {
         this.config = config
-        getData()
     }
+
     private val _mutableState = MutableStateFlow<InboxViewState>(InboxViewState.Initial)
     val state: StateFlow<InboxViewState> = _mutableState.asStateFlow()
 
@@ -44,8 +50,6 @@ class InboxViewModel(
 
     private val _previousButtonState = MutableStateFlow(true)
     val previousButtonState = _previousButtonState.asStateFlow()
-
-
 
 
     fun setShowDetailPage(boolean: Boolean) {
@@ -77,18 +81,31 @@ class InboxViewModel(
         setCurrentIndex(_currentIndex.value)
     }
 
-
-
-    fun getData() {
-        if (state.value != InboxViewState.Initial || config == null) return
+    fun sendAction(action: String) {
         viewModelScope.launch {
-            val data = api.getInboxViewData(
-                config!!.route,
+            _currentModel.value.id?.let { saveId(it) }
+            api.setAction(
+                url + "/${_currentModel.value.id}",
                 config!!.appId,
                 config!!.version,
-                config!!.deviceId,
+                config!!.deviceId ?: "",
+                BuildConfig.LIB_VERSION_NAME,
+                action,
             )
 
+        }
+    }
+
+    fun getData() {
+        if (config == null) return
+        viewModelScope.launch {
+            val data = api.getInboxViewData(
+                url,
+                config!!.appId,
+                config!!.version,
+                config!!.deviceId ?: "",
+                BuildConfig.LIB_VERSION_NAME,
+            )
 
             when (data) {
                 is NetworkResult.Success -> {
@@ -97,15 +114,27 @@ class InboxViewModel(
                         _mutableState.value = InboxViewState.NoData
                         _dataList.value = emptyList()
                     } else {
-                        _mutableState.value = InboxViewState.ShowData
-                        _dataList.value = data.value.toDomainList()
-                    }
 
+                        val savedIds = localDataSource.getAllIds()
+                        val list = ArrayList<InboxViewResponse>()
+
+                        data.value.toDomainList().forEach {
+                            if (!savedIds.contains(it.id)) {
+                                list.add(it)
+                            }
+                        }
+                        if(list.isEmpty()){
+                            _mutableState.value = InboxViewState.NoData
+                        }else{
+                            _dataList.value = list
+                            _mutableState.value = InboxViewState.ShowData
+
+                        }
+                    }
 
                 }
 
                 is NetworkResult.Error -> {
-
                     _mutableState.value = InboxViewState.Error(data.error)
                 }
             }
@@ -113,16 +142,23 @@ class InboxViewModel(
 
 
     }
-    private val _openDialog = MutableStateFlow(true)
+
+    private suspend fun saveId(id: String) {
+        localDataSource.addId(id)
+    }
+
+    private val _openDialog = MutableStateFlow(false)
     val openDialog: StateFlow<Boolean> = _openDialog.asStateFlow()
 
     fun showDialog() {
         _openDialog.value = true
     }
-    fun submitDialog(index: Int) {
+
+    fun showDetailPage(index: Int) {
         if (_dataList.value.isNotEmpty() && index in _dataList.value.indices) {
             setShowDetailPage(true)
             setCurrentIndex(index)
+            sendAction("VIEW")
         }
     }
 
@@ -133,6 +169,7 @@ class InboxViewModel(
         clearState()
 
     }
+
     fun clearState() {
         _mutableState.value = InboxViewState.Initial
     }

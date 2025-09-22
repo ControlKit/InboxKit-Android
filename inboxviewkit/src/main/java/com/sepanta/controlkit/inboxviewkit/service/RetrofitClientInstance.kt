@@ -1,5 +1,6 @@
 package com.sepanta.controlkit.inboxviewkit.service
 
+import com.sepanta.controlkit.inboxviewkit.BuildConfig
 import com.sepanta.controlkit.inboxviewkit.service.RetrofitClientInstance.logging
 import com.sepanta.controlkit.inboxviewkit.service.apiError.ThrowOnHttpErrorCallAdapterFactory
 import okhttp3.Interceptor
@@ -18,7 +19,7 @@ private var MAX_RETRY = 6
 
 object RetrofitClientInstance {
     private var retrofit: Retrofit? = null
-    private const val BASE_URL = "https://tauri.ir/api/"
+    private val BASE_URL = BuildConfig.API_URL+"/"
     val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
@@ -55,7 +56,6 @@ private fun createOkHttpClient(): OkHttpClient {
         while (tryCount <= MAX_RETRY) {
             try {
                 val respons = chain.proceed(request)
-
                     return@Interceptor respons
            
 
@@ -75,9 +75,9 @@ private fun createOkHttpClient(): OkHttpClient {
     }
 
     return OkHttpClient.Builder()
-        .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
-        .readTimeout(TIME_OUT, TimeUnit.SECONDS)
-        .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+        .writeTimeout(TIME_OUT, TimeUnit.MILLISECONDS)
+        .readTimeout(TIME_OUT, TimeUnit.MILLISECONDS)
+        .connectTimeout(TIME_OUT, TimeUnit.MILLISECONDS)
         .addInterceptor(retryInterceptor)
         .addInterceptor(logging)
         .build()

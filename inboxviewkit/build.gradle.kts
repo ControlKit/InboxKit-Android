@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +7,7 @@ plugins {
     id("jacoco")
 
 }
+version = "0.0.1"
 
 android {
     namespace = "com.sepanta.controlkit.inboxviewkit"
@@ -12,9 +15,21 @@ android {
 
     defaultConfig {
         minSdk = 26
-
+        buildConfigField("int", "LIB_VERSION_CODE", "1")
+        buildConfigField("String", "LIB_VERSION_NAME", "\"${project.version}\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.inputStream().use { localProperties.load(it) }
+        }
+
+        val apiUrl = localProperties.getProperty("API_URL") ?: "https://example.com/api/inbox-view"
+        buildConfigField("String", "API_URL", "\"$apiUrl\"")
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -35,7 +50,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-
+    buildFeatures {
+        buildConfig = true
+    }
     testOptions {
         unitTests.isIncludeAndroidResources = true
     }
@@ -44,6 +61,8 @@ android {
 dependencies {
 
     implementation(libs.androidx.material3)
+    implementation(libs.errorhandler)
+    implementation(libs.androidx.security.crypto)
 
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))

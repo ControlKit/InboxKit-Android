@@ -1,4 +1,4 @@
-package com.inboxview.view.ui
+package com.sepanta.controlkit.inboxviewkit.view.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
@@ -56,7 +56,7 @@ import com.sepanta.controlkit.inboxviewkit.theme.LocalSizeDimensions
 import com.sepanta.controlkit.inboxviewkit.utils.AutoResizeText
 import com.sepanta.controlkit.inboxviewkit.utils.FontSizeRange
 import com.inboxview.view.config.InboxContract
-import com.inboxview.view.config.InboxViewConfig
+import com.sepanta.controlkit.inboxviewkit.view.config.InboxViewConfig
 import com.sepanta.controlkit.inboxviewkit.view.ui.detailPage.ShowDetailView
 import com.sepanta.controlkit.inboxviewkit.theme.Black100
 import com.sepanta.controlkit.inboxviewkit.theme.Blue20
@@ -302,7 +302,7 @@ class InboxViewFullScreen1 : InboxContract {
         val sizeDime = LocalSizeDimensions.current
         val marginDim = LocalMarginDimensions.current
         val onClickAction: () -> Unit = {
-            viewModel.submitDialog(index)
+            viewModel.showDetailPage(index)
         }
 
         config.inboxItemView?.let { view ->

@@ -41,7 +41,7 @@ import com.sepanta.controlkit.inboxviewkit.R
 import com.sepanta.controlkit.inboxviewkit.view.viewModel.InboxViewModel
 import com.sepanta.controlkit.inboxviewkit.theme.LocalMarginDimensions
 import com.sepanta.controlkit.inboxviewkit.theme.LocalSizeDimensions
-import com.inboxview.view.config.InboxViewConfig
+import com.sepanta.controlkit.inboxviewkit.view.config.InboxViewConfig
 import com.sepanta.controlkit.inboxviewkit.theme.Black100
 import com.sepanta.controlkit.inboxviewkit.theme.Blue80
 import com.sepanta.controlkit.inboxviewkit.theme.Gray10

@@ -106,7 +106,7 @@ class InboxViewModelTest {
     }
 
     @Test
-    fun submitDialog_sets_showDetailPage_and_index() = runTest {
+    fun showDetailPage_sets_showDetailPage_and_index() = runTest {
         val mockResponse = ApiCheckUpdateResponse(
             listOf(ApiData("10", null, null, false, null, null, null, 1, null, null, null))
         )
@@ -115,7 +115,7 @@ class InboxViewModelTest {
         viewModel.setConfig(InboxViewServiceConfig())
         dispatcher.scheduler.advanceUntilIdle()
 
-        viewModel.submitDialog(0)
+        viewModel.showDetailPage(0)
 
         assertTrue(viewModel.showDetailPage.value)
         assertEquals("10", viewModel.currentModel.value.id)
