@@ -73,32 +73,6 @@ dependencies {
 }
 ```
 
-### Required Dependencies
-
-Make sure you have the following dependencies in your project:
-
-```kotlin
-dependencies {
-    // Jetpack Compose
-    implementation("androidx.compose.ui:ui:1.9.1")
-    implementation("androidx.compose.material3:material3:1.9.1")
-    implementation("androidx.activity:activity-compose:1.11.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
-    
-    // Network
-    implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    implementation("com.squareup.okhttp3:okhttp:5.1.0")
-    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
-    
-    // Image Loading
-    implementation("io.coil-kt:coil-compose:2.7.0")
-    
-    // Data Storage
-    implementation("androidx.datastore:datastore-preferences:1.1.7")
-    implementation("androidx.security:security-crypto:1.1.0")
-}
-```
-
 ## 📖 Quick Start
 
 ### 1. Basic Setup
