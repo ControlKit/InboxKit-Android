@@ -4,6 +4,7 @@
 [![API](https://img.shields.io/badge/API-26%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=26)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.20-blue.svg)](https://kotlinlang.org/)
+[![JitPack](https://jitpack.io/v/ControlKit/InboxKit-Android.svg)](https://jitpack.io/#ControlKit/InboxKit-Android)
 
 A powerful and customizable Android library for displaying inbox-style notifications and messages using Jetpack Compose. InboxKit provides a modern, flexible solution for managing user notifications with beautiful UI components and extensive customization options.
 
@@ -29,11 +30,47 @@ A powerful and customizable Android library for displaying inbox-style notificat
 
 ## 🚀 Installation
 
-Add the following to your project's `build.gradle.kts`:
+### Step 1: Add JitPack repository
+
+Add the JitPack repository to your project's `build.gradle.kts` (project level):
+
+```kotlin
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+    }
+}
+```
+
+### Step 2: Add dependency
+
+Add the following to your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
     implementation("com.github.ControlKit:InboxKit-Android:0.0.1")
+}
+```
+
+### Alternative: Using version catalog
+
+Add to your `libs.versions.toml`:
+
+```toml
+[versions]
+inboxkit = "0.0.1"
+
+[libraries]
+inboxkit = { module = "com.github.ControlKit:InboxKit-Android", version.ref = "inboxkit" }
+```
+
+Then use in your `build.gradle.kts`:
+
+```kotlin
+dependencies {
+    implementation(libs.inboxkit)
 }
 ```
 
@@ -415,11 +452,14 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+Copyright (c) 2024 ControlKit
+
 ## 🆘 Support
 
 - 📧 Email: support@controlkit.com
 - 🐛 Issues: [GitHub Issues](https://github.com/ControlKit/InboxKit-Android/issues)
 - 📖 Documentation: [Wiki](https://github.com/ControlKit/InboxKit-Android/wiki)
+- 📦 JitPack: [Download](https://jitpack.io/#ControlKit/InboxKit-Android)
 
 ## 🙏 Acknowledgments
 
