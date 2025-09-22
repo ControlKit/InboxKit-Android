@@ -3,12 +3,9 @@ package com.sepanta.controlkit.inboxviewkit
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sepanta.controlkit.inboxviewkit.config.InboxViewServiceConfig
 import com.inboxview.view.config.InboxViewStyle
 import com.sepanta.controlkit.inboxviewkit.service.ApiService
@@ -28,8 +25,6 @@ class InboxViewKit(
     ) {
 
     private var _viewModel: InboxViewModel? = null
-    val viewModel: InboxViewModel
-        get() = _viewModel ?: throw kotlin.IllegalStateException("ViewModel not initialized yet")
 
     init {
 
@@ -106,7 +101,7 @@ class InboxViewKit(
     @Composable
     private fun InitView() {
         InboxViewStyle.checkViewStyle(config.viewConfig.viewStyle)
-            .ShowView(config = config.viewConfig, viewModel)
+            .ShowView(config = config.viewConfig, _viewModel!!)
 
     }
 }

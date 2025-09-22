@@ -281,27 +281,6 @@ val inboxViewKit = inboxViewKitHost(
 )
 ```
 
-### Manual Control
-
-```kotlin
-// Get the ViewModel for manual control
-val viewModel = inboxViewKit.viewModel
-
-// Show the inbox
-inboxViewKit.showView()
-
-// Navigate programmatically
-viewModel.next()
-viewModel.previous()
-
-// Send custom actions
-viewModel.sendAction("CUSTOM_ACTION")
-
-// Check current state
-val currentState = viewModel.state.value
-val currentIndex = viewModel.currentIndex.value
-```
-
 ### API Configuration
 
 Create a `local.properties` file in your project root:
